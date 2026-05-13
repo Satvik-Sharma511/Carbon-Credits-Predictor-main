@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -7,6 +7,7 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import "./MapPicker.css";
 
 // Fix Leaflet default marker issue in React/Vite
@@ -15,10 +16,8 @@ delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
 function ClickHandler({ onSelect }) {
@@ -26,7 +25,6 @@ function ClickHandler({ onSelect }) {
     click(e) {
       const lat = Number(e.latlng.lat.toFixed(6));
       const lon = Number(e.latlng.lng.toFixed(6));
-
       onSelect({ lat, lon });
     },
   });
@@ -34,44 +32,83 @@ function ClickHandler({ onSelect }) {
   return null;
 }
 
-function ChangeMapCenter({ position }) {
+function MapFixer({ position }) {
   const map = useMap();
 
   useEffect(() => {
-    if (position?.lat && position?.lon) {
-      map.setView([position.lat, position.lon], 14);
+    const timer1 = setTimeout(() => {
+      map.invalidateSize(false);
+    }, 200);
+
+    const timer2 = setTimeout(() => {
+      map.invalidateSize(false);
+    }, 700);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [map]);
+
+  useEffect(() => {
+    if (
+      Number.isFinite(Number(position?.lat)) &&
+      Number.isFinite(Number(position?.lon))
+    ) {
+      map.setView([position.lat, position.lon], 13, {
+        animate: false,
+      });
+
+      setTimeout(() => {
+        map.invalidateSize(false);
+      }, 150);
     }
-  }, [position, map]);
+  }, [position.lat, position.lon, map]);
 
   return null;
 }
 
-export default function MapPicker({ lat = 28.61, lon = 77.2, onLocationSelect }) {
-  const [position, setPosition] = useState({
-    lat,
-    lon,
-  });
+export default function MapPicker({
+  lat = 28.61,
+  lon = 77.2,
+  onLocationSelect,
+}) {
+  const safeInitialPosition = useMemo(
+    () => ({
+      lat: Number.isFinite(Number(lat)) ? Number(lat) : 28.61,
+      lon: Number.isFinite(Number(lon)) ? Number(lon) : 77.2,
+    }),
+    [lat, lon]
+  );
 
+  const [position, setPosition] = useState(safeInitialPosition);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setPosition({
-      lat,
-      lon,
-    });
-  }, [lat, lon]);
+    setPosition(safeInitialPosition);
+  }, [safeInitialPosition]);
 
-  const handleSetPosition = (newPosition) => {
-    setPosition(newPosition);
+  const handleSetPosition = useCallback(
+    (newPosition) => {
+      const cleanPosition = {
+        lat: Number(Number(newPosition.lat).toFixed(6)),
+        lon: Number(Number(newPosition.lon).toFixed(6)),
+      };
 
-    if (onLocationSelect) {
-      onLocationSelect(newPosition);
-    }
-  };
+      setPosition(cleanPosition);
+
+      if (onLocationSelect) {
+        onLocationSelect(cleanPosition);
+      }
+    },
+    [onLocationSelect]
+  );
 
   const searchAddress = async () => {
-    if (!search.trim()) {
+    const query = search.trim();
+
+    if (!query) {
       alert("Please enter address");
       return;
     }
@@ -80,10 +117,19 @@ export default function MapPicker({ lat = 28.61, lon = 77.2, onLocationSelect })
       setLoading(true);
 
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          search
-        )}`
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+          query
+        )}`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
       );
+
+      if (!response.ok) {
+        throw new Error("Search request failed");
+      }
 
       const data = await response.json();
 
@@ -92,15 +138,24 @@ export default function MapPicker({ lat = 28.61, lon = 77.2, onLocationSelect })
         return;
       }
 
-      const lat = Number(parseFloat(data[0].lat).toFixed(6));
-      const lon = Number(parseFloat(data[0].lon).toFixed(6));
+      const nextLat = Number(parseFloat(data[0].lat).toFixed(6));
+      const nextLon = Number(parseFloat(data[0].lon).toFixed(6));
 
-      handleSetPosition({ lat, lon });
+      handleSetPosition({
+        lat: nextLat,
+        lon: nextLon,
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Map search error:", error);
       alert("Something went wrong while searching address");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      searchAddress();
     }
   };
 
@@ -112,6 +167,7 @@ export default function MapPicker({ lat = 28.61, lon = 77.2, onLocationSelect })
           placeholder="Search address..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
         />
 
         <button type="button" onClick={searchAddress} disabled={loading}>
@@ -119,21 +175,32 @@ export default function MapPicker({ lat = 28.61, lon = 77.2, onLocationSelect })
         </button>
       </div>
 
-      <MapContainer
-        center={[position.lat, position.lon]}
-        zoom={13}
-        className="map-container"
-      >
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div className="map-shell">
+        <MapContainer
+          center={[position.lat, position.lon]}
+          zoom={13}
+          minZoom={4}
+          maxZoom={18}
+          scrollWheelZoom={true}
+          zoomControl={true}
+          attributionControl={false}
+          preferCanvas={true}
+          className="map-container"
+        >
+          <TileLayer
+            attribution="&copy; OpenStreetMap contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            keepBuffer={2}
+            updateWhenIdle={true}
+            updateWhenZooming={false}
+          />
 
-        <Marker position={[position.lat, position.lon]} />
+          <Marker position={[position.lat, position.lon]} />
 
-        <ClickHandler onSelect={handleSetPosition} />
-        <ChangeMapCenter position={position} />
-      </MapContainer>
+          <ClickHandler onSelect={handleSetPosition} />
+          <MapFixer position={position} />
+        </MapContainer>
+      </div>
 
       <div className="lat-lng-box">
         <div>
