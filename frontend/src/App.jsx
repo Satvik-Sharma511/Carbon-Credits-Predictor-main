@@ -1,4 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+
+
+
+
+
+import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import MapPicker from './components/MapPicker';
 import './index.css';
@@ -63,6 +68,8 @@ function App() {
     'Checking backend connection...'
   );
 
+  const [mapRenderKey, setMapRenderKey] = useState(0);
+
   const calculatorRef = useRef(null);
   const datasetRef = useRef(null);
   const workflowRef = useRef(null);
@@ -82,7 +89,6 @@ function App() {
           if (data?.hf_online === true && data?.hf_model_loaded === true) {
             setBackendStatus('online');
             setBackendStatusMessage('Backend online. Model API connected.');
-            setBackendError('');
           } else if (data?.hf_online === true) {
             setBackendStatus('warning');
             setBackendStatusMessage(
@@ -114,6 +120,14 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMapRenderKey((prev) => prev + 1);
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const scrollToSection = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -128,6 +142,16 @@ function App() {
 
     setBackendError('');
   };
+
+  const handleMapLocationSelect = useCallback((selectedLocation) => {
+    setFormData((prev) => ({
+      ...prev,
+      lat: Number(Number(selectedLocation.lat).toFixed(6)),
+      lon: Number(Number(selectedLocation.lon).toFixed(6)),
+    }));
+
+    setBackendError('');
+  }, []);
 
   const calculate = async () => {
     if (loading) return;
@@ -405,19 +429,24 @@ function App() {
                 right. You can also type them manually.
               </p>
 
-              <MapPicker
-                lat={Number(formData.lat) || 28.61}
-                lon={Number(formData.lon) || 77.2}
-                onLocationSelect={(selectedLocation) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    lat: selectedLocation.lat,
-                    lon: selectedLocation.lon,
-                  }));
-
-                  setBackendError('');
+              <div
+                style={{
+                  width: '100%',
+                  height: '430px',
+                  minHeight: '430px',
+                  overflow: 'hidden',
+                  borderRadius: '24px',
+                  position: 'relative',
+                  background: 'rgba(15, 23, 42, 0.65)',
                 }}
-              />
+              >
+                <MapPicker
+                  key={mapRenderKey}
+                  lat={Number(formData.lat) || 28.61}
+                  lon={Number(formData.lon) || 77.2}
+                  onLocationSelect={handleMapLocationSelect}
+                />
+              </div>
             </div>
 
             <div className="calculator-details-card">
