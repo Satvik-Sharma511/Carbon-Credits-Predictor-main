@@ -2964,3 +2964,8 @@ select optgroup {
     font-size: 1.85rem;
   }
 }
+
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+}
