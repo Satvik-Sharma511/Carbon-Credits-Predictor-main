@@ -95,25 +95,6 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-### 3. Production Build (Serving from FastAPI)
-
-The backend is configured to serve the React build as static files:
-
-```bash
-# 1. Build the frontend
-cd src
-npm run build
-# This produces src/dist/
-
-# 2. Copy the build output into the backend's static folder
-cp -r src/dist/ backend/backend/static/
-
-# 3. Start the backend — it now serves both the API and the frontend
-cd backend/backend
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
----
 
 
 ## How It Works
