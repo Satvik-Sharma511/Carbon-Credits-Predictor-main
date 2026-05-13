@@ -1,3 +1,4 @@
+#The Base image for the python 
 FROM python:3.10-slim
 
 WORKDIR /app
@@ -38,6 +39,7 @@ RUN mkdir -p ./backend/static \
 # Start FastAPI backend, which serves frontend too
 WORKDIR /app/backend
 
+# Port
 EXPOSE 10000
 
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-10000}"]
