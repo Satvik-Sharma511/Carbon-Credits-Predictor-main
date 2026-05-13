@@ -75,16 +75,7 @@ uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 
 The backend will be available at `http://localhost:8000`.
 
-#### Environment Variables (optional)
 
-| Variable | Default | Description |
-|---|---|---|
-| `HF_MODEL_API_URL` | `https://wwddsd-solarcarbon-model-api.hf.space/predict` | Hugging Face model prediction endpoint |
-| `HF_SPACE_HEALTH_URL` | `https://wwddsd-solarcarbon-model-api.hf.space/health` | Hugging Face Space health check URL |
-| `HF_API_TIMEOUT` | `120` | Timeout (seconds) for prediction requests |
-| `HF_HEALTH_TIMEOUT` | `8` | Timeout (seconds) for health check requests |
-
----
 
 ### 2. Frontend Setup
 
