@@ -154,3 +154,46 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ================================
+   Search Bar Dark Theme Override
+   ================================ */
+
+.map-picker .map-search-box {
+  background: rgba(2, 20, 14, 0.88) !important;
+  border: 1px solid rgba(52, 211, 153, 0.22) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.map-picker .map-search-box input {
+  background: rgba(0, 15, 10, 0.92) !important;
+  border: 1px solid rgba(52, 211, 153, 0.18) !important;
+  color: #ecfdf5 !important;
+}
+
+.map-picker .map-search-box input::placeholder {
+  color: rgba(209, 250, 229, 0.55) !important;
+}
+
+.map-picker .map-search-box input:focus {
+  background: rgba(0, 20, 14, 0.96) !important;
+  border-color: rgba(52, 211, 153, 0.75) !important;
+  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.12) !important;
+}
+
+.map-picker .map-search-box button {
+  background: linear-gradient(135deg, #34d399, #10b981) !important;
+  color: #02140e !important;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.28) !important;
+}
+
+.map-picker .map-search-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(16, 185, 129, 0.38) !important;
+}
+
+.map-picker .map-search-box button:disabled {
+  opacity: 0.65 !important;
+  cursor: wait !important;
+}
