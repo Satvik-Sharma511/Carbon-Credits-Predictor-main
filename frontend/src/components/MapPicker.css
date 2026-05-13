@@ -1,0 +1,137 @@
+.map-picker {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.map-search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.map-search-box input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.map-search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.map-search-box input:focus {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.map-search-box button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.map-search-box button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.map-container {
+  height: 360px;
+  width: 100%;
+  min-height: 360px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  z-index: 1;
+  background: #111827;
+}
+
+.map-container .leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1;
+}
+
+.leaflet-control {
+  z-index: 2;
+}
+
+.lat-lng-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.lat-lng-box div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lat-lng-box label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.lat-lng-box input {
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 15px;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .map-search-box {
+    flex-direction: column;
+  }
+
+  .lat-lng-box {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 300px;
+    min-height: 300px;
+  }
+}
+.map-container {
+  height: 260px;
+  width: 100%;
+  min-height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  position: relative;
+  z-index: 1;
+  background: #111827;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.12);
+}

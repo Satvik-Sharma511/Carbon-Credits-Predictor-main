@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: #34d399;
+
+  --bg-dark: #020617;
+  --card-bg: rgba(15, 23, 42, 0.48);
+  --card-bg-soft: rgba(15, 23, 42, 0.34);
+
+  --border: rgba(255, 255, 255, 0.12);
+  --border-green: rgba(16, 185, 129, 0.38);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(16, 185, 129, 0.22), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(52, 211, 153, 0.14), transparent 32%),
+    linear-gradient(135deg, #020617 0%, #07111f 48%, #020617 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, black, transparent);
+}
+
+/* ================= HERO SECTION ================= */
+
+.hero-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  position: relative;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(2, 6, 23, 0.35), rgba(2, 6, 23, 0.78)),
+    url("https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1600&auto=format&fit=crop");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.55;
+  z-index: -2;
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.2);
+  filter: blur(90px);
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 900px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.95;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  background: linear-gradient(to right, #ffffff, #a7f3d0, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+  max-width: 720px;
+  margin: 28px auto 0;
+  color: rgba(248, 250, 252, 0.82);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.scroll-btn {
+  margin-top: 34px;
+  padding: 16px 30px;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.16);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 28px rgba(16, 185, 129, 0.24),
+    inset 0 0 18px rgba(255, 255, 255, 0.05);
+  transition: all 0.35s ease;
+}
+
+.scroll-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: rgba(16, 185, 129, 0.3);
+  box-shadow:
+    0 0 45px rgba(16, 185, 129, 0.48),
+    0 18px 36px rgba(0, 0, 0, 0.35);
+}
+
+/* ================= CALCULATOR SECTION ================= */
+
+.calculator-section {
+  width: 100%;
+  min-height: 100vh;
+  padding: 90px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  background:
+    radial-gradient(circle at center, rgba(16, 185, 129, 0.12), transparent 34%),
+    linear-gradient(135deg, #020617 0%, #07111f 50%, #020617 100%);
+}
+
+.dashboard-container {
+  width: 100%;
+  max-width: 620px;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.glass-card {
+  width: 100%;
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.62), rgba(15, 23, 42, 0.32));
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 30px;
+  padding: 34px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.52),
+    0 0 46px rgba(16, 185, 129, 0.16),
+    inset 0 0 36px rgba(255, 255, 255, 0.035);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(52, 211, 153, 0.24), transparent 30%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.18), transparent 28%);
+  pointer-events: none;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  margin-bottom: 26px;
+}
+
+header h2,
+header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(to right, #ffffff, #34d399, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 8px 0 0;
+}
+
+.input-section {
+  margin: 26px 0;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(148, 163, 184, 0.95);
+  line-height: 1.2;
+}
+
+input,
+select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.54);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.22s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+input:hover,
+select:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.08);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow:
+    0 0 0 3px rgba(16, 185, 129, 0.12),
+    0 0 24px rgba(16, 185, 129, 0.22);
+}
+
+select {
+  appearance: auto;
+  cursor: pointer;
+}
+
+.select-wrapper {
+  width: 100%;
+}
+
+/* ================= BUTTON ================= */
+
+.calc-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  border-radius: 18px;
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 14px 34px rgba(16, 185, 129, 0.28),
+    inset 0 0 18px rgba(255, 255, 255, 0.14);
+  transition: all 0.35s ease;
+}
+
+.calc-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.65s ease;
+}
+
+.calc-btn:hover {
+  transform: translateY(-4px) scale(1.01);
+  background: linear-gradient(135deg, #34d399, #059669);
+  box-shadow:
+    0 0 42px rgba(16, 185, 129, 0.48),
+    0 18px 38px rgba(0, 0, 0, 0.4),
+    inset 0 0 22px rgba(255, 255, 255, 0.2);
+}
+
+.calc-btn:hover::before {
+  left: 140%;
+}
+
+/* ================= RESULTS ================= */
+
+.results-panel {
+  margin-top: 36px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 28px;
+  animation: slideUp 0.6s ease-out;
+}
+
+.credit-hero {
+  text-align: center;
+  background: rgba(16, 185, 129, 0.09);
+  padding: 24px;
+  border-radius: 22px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: inset 0 0 28px rgba(16, 185, 129, 0.08);
+}
+
+.credit-hero h2,
+.credit-hero h3 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 6px 0 0;
+  color: var(--primary-light);
+  text-shadow: 0 0 22px rgba(16, 185, 129, 0.35);
+}
+
+.credit-hero span,
+.result-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label,
+.stat-card small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+}
+
+.stat-val,
+.stat-card strong {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+/* ================= SIDE IMAGES ================= */
+
+.side-visual {
+  flex: 1;
+  max-width: 320px;
+  height: 650px;
+  border-radius: 30px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 34px rgba(16, 185, 129, 0.12);
+  transition: background-image 1s ease-in-out, transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0.72;
+  overflow: hidden;
+}
+
+.side-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, transparent, rgba(2, 6, 23, 0.72)),
+    radial-gradient(circle at center, rgba(16, 185, 129, 0.12), transparent 55%);
+  backdrop-filter: blur(1px);
+}
+
+.side-visual:hover {
+  opacity: 0.9;
+  transform: translateY(-5px);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.55),
+    0 0 48px rgba(16, 185, 129, 0.22);
+}
+
+.visual-label {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  z-index: 2;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.8);
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1200px) {
+  .calculator-section {
+    gap: 20px;
+    padding: 80px 24px;
+  }
+
+  .side-visual {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 980px) {
+  .calculator-section {
+    flex-direction: column;
+  }
+
+  .side-visual {
+    width: 100%;
+    max-width: 620px;
+    height: 220px;
+  }
+
+  .dashboard-container {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding: 70px 18px;
+  }
+
+  .calculator-section {
+    padding: 60px 14px;
+  }
+
+  .glass-card {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .input-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .credit-hero h2,
+  .credit-hero h3 {
+    font-size: 2.35rem;
+  }
+}
