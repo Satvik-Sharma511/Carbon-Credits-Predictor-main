@@ -2,10 +2,37 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+ENV PYTHONUNBUFFERED=1
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install system deps + Node.js
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    build-essential \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+# Install backend deps
+COPY backend/requirements.txt ./backend/requirements.txt
+RUN pip install --no-cache-dir -r ./backend/requirements.txt
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Build frontend
+COPY frontend/package*.json ./frontend/
+WORKDIR /app/frontend
+RUN npm install
+
+COPY frontend ./frontend
+RUN npm run build
+
+# Copy backend
+WORKDIR /app
+COPY backend ./backend
+
+# Copy frontend dist into backend static folder
+RUN mkdir -p ./backend/static && cp -r ./frontend/dist/* ./backend/static/
+
+WORKDIR /app/backend
+
+EXPOSE 10000
+
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-10000}
