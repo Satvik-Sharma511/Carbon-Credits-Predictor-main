@@ -6,7 +6,7 @@
 
 ## Overview
 
-SolarCarbon is a full-stack web application that lets Indian solar users calculate their potential carbon credit impact. Users select their location on an interactive map (or type coordinates manually), enter their panel area and a timeframe, and receive an estimated report covering:
+SolarCarbon is a web application that lets Indian solar users calculate their potential carbon credit impact. Users select their location on an interactive map (or type coordinates manually), enter their panel area and a timeframe, and receive an estimated report covering:
 
 - **Carbon Credits** earned (1 credit = 1 ton CO₂ avoided)
 - **CO₂ Avoided** (kg)
