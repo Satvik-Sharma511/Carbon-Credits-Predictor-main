@@ -1,6 +1,7 @@
 # SolarCarbon ☀️
 
 **Indian solar carbon credit prediction system** — estimates carbon credits, avoided CO₂ emissions, and solar energy yield from rooftop and industrial solar panel setups across India.
+🔗 Live: carbon-credits-predictor-main.onrender.com
 
 ---
 
